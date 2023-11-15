@@ -32,12 +32,12 @@ var (
 const (
 	instPath     = "/usr/local"
 	rollbackPath = instPath + "/share/rollback/"
-	appVersion   = "1.0.0"
+	appVersion   = ""
 )
 
 func init() {
 	// Generate a unique filename when the application starts
-	filename = "audit_" + time.Now().Format("20060102_1.0.05")
+	filename = "audit_" + time.Now().Format("20060102_5")
 
 	flag.BoolVar(&versionFlag, "version", false, "print version and exit")
 
@@ -220,7 +220,7 @@ func logChange(path string, oldPerms, newPerms os.FileMode) {
 	os.MkdirAll(rollbackPath, 0755)
 
 	// Create a log file with a timestamp
-	timestamp := time.Now().Format("20060102-1.0.05")
+	timestamp := time.Now().Format("20060102-5")
 	logFileName := filepath.Join(rollbackPath, fmt.Sprintf("chperm-%s.log", timestamp))
 
 	// Format the log entry

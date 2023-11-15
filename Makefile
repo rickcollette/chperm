@@ -3,7 +3,7 @@
 # Set the output binary name
 BINARY_NAME=chperm
 VERSION ?= 1.0.0 # Default version
-BUILD_ID=$(shell git rev-parse --short HEAD)
+BUILD_ID=$(git rev-parse --short HEAD)
 
 all: directories build config
 
@@ -17,8 +17,8 @@ directories:
 
 build:
 	@echo "Building the Go binary..."
-	@go build -ldflags "-buildid=$(BUILD_ID) -o dist/usr/local/bin/$(BINARY_NAME)
-	
+	@go build -o dist/usr/local/bin/$(BINARY_NAME) .
+
 config:
 	@echo "Copying configuration file..."
 	@cp chperm.conf dist/usr/local/etc/chperm.conf

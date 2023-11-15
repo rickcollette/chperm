@@ -119,7 +119,7 @@ create_shar() {
     mkdir -p "$SHAR_DIR"
 
     # Create shar archive
-    shar "$SOURCE_DIR/chperm" "$MAN_DIR/chperm.1" "$SOURCE_DIR/chperm.conf" > "$SHAR_DIR/$PACKAGE_NAME-$VERSION.shar"
+    shar "$SOURCE_DIR/local/bin/chperm" "$MAN_DIR/chperm.1" "$SOURCE_DIR/local/etc/chperm.conf" > "$SHAR_DIR/$PACKAGE_NAME-$VERSION.shar"
 
     # Add extraction and permission logic
     cat >> "$SHAR_DIR/$PACKAGE_NAME-$VERSION.shar" << 'EOF'
@@ -142,7 +142,7 @@ EOF
 update_vars_in_files() {
     sed -i "s/@@VERSION@@/$VERSION/g" "$MAN_DIR/chperm.1"
     sed -i "s/@@DATE@@/$(date +%Y-%m-%d)/g" "$MAN_DIR/chperm.1"
-    sed -i "s/@@VERSION@@/$VERSION/g" "main.go"
+    sed -i "s/@@VERSION@@/$3/g" "main.go"
 }
 
 # Main function
