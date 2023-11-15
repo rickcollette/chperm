@@ -1,0 +1,68 @@
+.TH CHPERM 1 "14-11-2023" "chperm 1.0.0" "User Commands"
+.SH NAME
+chperm \- apply Unix permissions to folders and files.
+.SH SYNOPSIS
+.B chperm
+[OPTION]...
+.SH DESCRIPTION
+chperm is a command-line utility for applying Unix permissions to folders and files. It can operate either recursively or non-recursively and supports rollback of the last few changes made. The permissions are specified in octal format. When used with the \-audit option, it records the changes in an Excel file.
+.SH OPTIONS
+.TP
+.B \-vvv
+Enable verbose output.
+.TP
+.B \-path
+Specify the path to apply permissions.
+.TP
+.B \-perms
+Specify the permissions in octal format.
+.TP
+.B \-recurse
+Recurse into directories.
+.TP
+.B \-rollback
+Rollback the last N changes.
+.TP
+.B \-audit
+Audit changes to permissions. This will generate an Excel file named 'audit_<timestamp>.xlsx' where <timestamp> is the time at which the application was run.
+.TP
+.B \-o csv
+Output audit to a csv file. (xlsx is recommended for Excel format)
+.SH EXAMPLES
+.B "Apply permissions recursively and audit:"
+.RS
+chperm \-path /path/to/folder \-perms 0755 \-recurse \-audit
+.RE
+.B "Apply permissions without recursion:"
+.RS
+chperm \-path /path/to/file \-perms 0644
+.RE
+.B "Rollback last 5 permission changes:"
+.RS
+chperm \-rollback 5
+.RE
+.SH PERMISSION BITS
+Permissions in Unix are represented by three groups: owner, group, and others. Each group can have read (r), write (w), and execute (x) permissions. Permissions are represented in octal format:
+.TP
+.B "Read (r)"
+is 4.
+.TP
+.B "Write (w)"
+is 2.
+.TP
+.B "Execute (x)"
+is 1.
+To combine permissions, add the values together. For example, read and write (rw) is 6 (4+2), and read, write, and execute (rwx) is 7 (4+2+1).
+.SH CONFIGURATION FILE
+The configuration file \fI/etc/chperm/chperm.conf\fR specifies the default paths and permissions that chperm should apply when not using command-line arguments. Each line in the file should contain a path, the permissions for that path, and a boolean flag indicating whether to recurse into subdirectories (1 for true, 0 for false). Lines beginning with a hash (#) are treated as comments and ignored.
+.SH FILES
+.TP
+/etc/chperm/chperm.conf
+Configuration file.
+.TP
+audit_<timestamp>.xlsx
+Excel file generated for audit logs. <timestamp> format is 'YYYYMMDD_HHMMSS'.
+.SH AUTHOR
+Written by github.com/rickcollette.
+.SH GITHUB
+Latest version can be found at https://github.com/rickcollette/chperm
