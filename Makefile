@@ -43,3 +43,19 @@ shar: all
 
 packages: deb rpm shar
 	@echo "All packages built!"
+
+install:
+	@if [ ! -d "dist" ]; then \
+	    		echo "Please run \"make all\" then run \"sudo make install\"."; \
+				exit 1; \
+	fi
+	@if [ "$$(id -u)" -ne 0 ]; then \
+		echo "Please run as root or use sudo to install."; \
+		exit 1; \
+	fi
+	@echo "Installing chperm..."
+	@mkdir -p /usr/local/bin /usr/local/etc /usr/share/man/man1
+	@cp -f dist/usr/local/bin/$(BINARY_NAME) /usr/local/bin/
+	@cp -f dist/usr/local/etc/chperm.conf /usr/local/etc/
+	@cp -f dist/usr/share/man/man1/chperm.1 /usr/share/man/man1/
+	@echo "Installation completed."

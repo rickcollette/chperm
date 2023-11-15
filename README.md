@@ -28,6 +28,15 @@ cd chperm
 make build
 ```
 
+### Installing manually
+
+```sh
+git clone https://github.com/rickcollette/chperm
+cd chperm
+make
+sudo make install
+```
+
 ### Installing from Packages
 
 Use the provided `buildpkgs.sh` script to create RPM or Debian packages:
