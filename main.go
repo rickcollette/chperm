@@ -85,15 +85,32 @@ func main() {
 }
 
 func processConfigFile() {
-	configFile := instPath + "/etc/chperm.conf"
-	fmt.Print("configFile: ", configFile, "\n")
+	// List of potential configuration file paths
+	configPaths := []string{
+		"/etc/chperm.conf",
+		"/usr/local/etc/chperm.conf",
+		"/etc/default/chperm.conf",
+		"./chperm.conf", // Current Working Directory
+	}
 
-	file, err := os.Open(configFile)
+	var file *os.File
+	var err error
+
+	// Iterate over config paths and try to open the file
+	for _, path := range configPaths {
+		file, err = os.Open(path)
+		if err == nil {
+			defer file.Close()
+			fmt.Print("Using configuration file: ", path, "\n")
+			break
+		}
+	}
+
+	// If no file was opened, return
 	if err != nil {
-		fmt.Printf("Error opening configuration file: %v\\n", err)
+		fmt.Printf("Error: Configuration file not found in any of the standard paths.\n")
 		return
 	}
-	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -110,7 +127,7 @@ func processConfigFile() {
 		}
 
 		if *verbose {
-			fmt.Printf("Processing: %s with permissions %04o\\n", path, permissions)
+			fmt.Printf("Processing: %s with permissions %04o\n", path, permissions)
 		}
 
 		if recurse {
@@ -121,7 +138,7 @@ func processConfigFile() {
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading configuration file: %v\\n", err)
+		fmt.Printf("Error reading configuration file: %v\n", err)
 	}
 }
 
